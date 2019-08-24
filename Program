@@ -1,0 +1,44 @@
+using System;
+using System.Linq.Expressions;
+
+namespace ExpressionTreeDemo
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //Expression<Func<T, bool>> lambda = n => n.Name == "abc";
+            Console.WriteLine("lambda ：  n => n.Name == \"abc\" ");
+            var a = GetLambdaStr<User>(n => n.Name == "abc");
+            Console.WriteLine("result：" + a);
+            Console.Write(Environment.NewLine);
+            Console.ReadKey();
+
+            //Expression<Func<T, bool>> lambda = n => n.states;
+            Console.WriteLine("analysis： n => n.states ");
+            var b = GetLambdaStr<User>(n => n.States);
+            Console.WriteLine("result：" + b);
+            Console.ReadKey();
+
+            //Expression<Func<T, bool>> lambda = n => n.Name == "abc" && n.Age > 30 || n.ID == 4;
+            Console.WriteLine("lambda： n => n.Name == \"abc\" && n.Age > 30 || n.ID == 4");
+            var c = GetLambdaStr<User>(n => n.Name == "abc" && (n.Age > 30 || n.ID == 4) && n.ID > 1 && (n.ID > 19 || n.Name == "33"));
+            Console.WriteLine("result：" + c);
+            Console.Write(Environment.NewLine);
+            Console.ReadKey();
+        }
+        private static string GetLambdaStr<T>(Expression<Func<T, bool>> expression)
+        {
+            //解析表达式
+            return new Analysis().AnalysisExpression(expression);
+        }
+        public class User
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public int Age { get; set; }
+            public bool States { get; set; }
+
+        }
+    }
+}
